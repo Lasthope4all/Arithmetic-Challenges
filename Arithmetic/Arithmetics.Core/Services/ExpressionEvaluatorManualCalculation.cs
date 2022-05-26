@@ -26,6 +26,7 @@ namespace Arithmetics.Core.Services
         public string BreakdownString(string input, char op)
         {
             var updatedInput = input;
+
             while (true)
             {
                 var divIndex = updatedInput.IndexOf(op);
@@ -36,13 +37,13 @@ namespace Arithmetics.Core.Services
                 var secondNumberIndex = GetIndexOfNumberAfterOperator(updatedInput, divIndex);
                 var calculation = updatedInput.Substring(firstNumberIndex, (secondNumberIndex - firstNumberIndex) + 1);
                 var res = Calculate(calculation, op);
-                updatedInput = updatedInput.Replace(calculation, res);
+                updatedInput = updatedInput.Replace(calculation, res.ToString());
             }
 
             return updatedInput;
         }
 
-        public int GetIndexOfNumberBeforeOperator(string equation, int indexOfOperator)
+        public static int GetIndexOfNumberBeforeOperator(string equation, int indexOfOperator)
         {
             var pointer = indexOfOperator;
             while (true)
@@ -58,7 +59,7 @@ namespace Arithmetics.Core.Services
             }
         }
 
-        public int GetIndexOfNumberAfterOperator(string equation, int indexOfOperator)
+        public static int GetIndexOfNumberAfterOperator(string equation, int indexOfOperator)
         {
             var pointer = indexOfOperator;
             while (true)
@@ -74,7 +75,7 @@ namespace Arithmetics.Core.Services
             }
         }
 
-        public static string Calculate(string equation, char op)
+        public static decimal Calculate(string equation, char op)
         {
             var parts = equation.Split(op);
             var first = decimal.Parse(parts[0]);
@@ -82,11 +83,11 @@ namespace Arithmetics.Core.Services
 
             return op switch
             {
-                Division => (first / second).ToString(),
-                Multiplication => (first * second).ToString(),
-                Subtraction => (first - second).ToString(),
-                Addition => (first + second).ToString(),
-                _ => throw new System.Exception()
+                Division => first / second,
+                Multiplication => first * second,
+                Subtraction => first - second,
+                Addition => first + second,
+                _ => throw new Exception()
             };
         }
     }
